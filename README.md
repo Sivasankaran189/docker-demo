@@ -1,43 +1,119 @@
-import os
+# 🏋️ GreenFit - Dockerized Fitness Logger
 
-# Define the content for the README.md file
-readme_content = """# GreenFit | Dockerized Full-Stack Fitness Logger
+GreenFit is a simple demo full-stack fitness logging application built using:
 
-This project is a containerized mini-project that demonstrates a full-stack application using **Node.js**, **Express**, and **MongoDB**. It features a clean web interface called **GreenFit** where users can log workout activities, which are then stored in a secure MongoDB database.
+- Node.js
+- Express.js
+- MongoDB
+- Docker
 
-## 🚀 Project Overview
-
-The architecture follows a modern containerized approach, isolating the frontend/backend service from the database and providing a web-based UI for database management via Mongo Express.
-
-### Key Features:
-- **GreenFit Frontend:** A simple, responsive UI for activity logging.
-- **Node.js Backend:** Handles API requests and database communication.
-- **MongoDB:** NoSQL database for persistent storage.
-- **Mongo Express:** A web-based administrative interface for MongoDB.
-- **Dockerized Workflow:** Entire stack managed via Docker networks and containers.
+Users can enter workout details through a web interface, and the data is stored in MongoDB.
 
 ---
 
-## 🖼️ Project Screenshots
+# 🚀 Features
 
-### 1. The GreenFit UI
-The main application interface where users input their name, activity, and duration.
-![GreenFit UI](image_75d571.png)
-
-### 2. Live Database Updates
-Logs from the `greenfit-site` container showing real-time data being successfully saved to MongoDB.
-![Container Logs](image_75d452.png)
-
-### 3. Public Docker Registry
-The project image is successfully pushed and hosted on Docker Hub for public access.
-![Docker Hub](image_75d498.png)
+- Simple fitness activity logger
+- MongoDB database integration
+- Mongo Express dashboard
+- Dockerized setup
+- Multi-container networking
 
 ---
 
-## 🛠️ Setup and Installation
+# 🛠️ Technologies Used
 
-### Prerequisites
-- Docker and Docker Desktop installed.
-- Git (optional, for cloning).
+- Node.js
+- Express.js
+- MongoDB
+- Mongo Express
+- Docker
 
-### Step 1: Create the Network
+---
+
+# 📸 Screenshots
+
+## GreenFit UI
+
+<img width="1440" height="839" alt="GreenFit UI" src="https://github.com/user-attachments/assets/0052bca9-cde4-4eba-b546-59ee4b66f869" />
+
+---
+
+## MongoDB Logs
+
+<img width="1889" height="814" alt="Container Logs" src="https://github.com/user-attachments/assets/29d8e4ca-e094-4d42-8775-f854c43b3433" />
+
+---
+
+## Docker Hub
+
+<img width="1581" height="820" alt="Docker Hub" src="https://github.com/user-attachments/assets/3c6e24bc-6ffa-495a-8db7-8e8f836b447d" />
+
+---
+
+# ⚙️ Setup
+
+## Create Network
+
+```bash
+docker network create mongo-network
+```
+
+## Run MongoDB
+
+```bash
+docker run -d \
+  -p 27017:27017 \
+  --name mongodb \
+  --net mongo-network \
+  -e MONGO_INITDB_ROOT_USERNAME=admin \
+  -e MONGO_INITDB_ROOT_PASSWORD=password \
+  mongo
+```
+
+## Run Mongo Express
+
+```bash
+docker run -d \
+  -p 8081:8081 \
+  --name mongo-express \
+  --net mongo-network \
+  -e ME_CONFIG_MONGODB_ADMINUSERNAME=admin \
+  -e ME_CONFIG_MONGODB_ADMINPASSWORD=password \
+  -e ME_CONFIG_MONGODB_SERVER=mongodb \
+  mongo-express
+```
+
+## Build Docker Image
+
+```bash
+docker build -t greenfit-image .
+```
+
+## Run GreenFit App
+
+```bash
+docker run -d \
+  -p 3000:3000 \
+  --name greenfit-site \
+  --net mongo-network \
+  greenfit-image
+```
+
+---
+
+# 🔗 Access
+
+- GreenFit App: http://localhost:3000
+- Mongo Express: http://localhost:8081
+
+Login:
+- Username: admin
+- Password: password
+
+---
+
+# 👨‍💻 Author
+
+Sivasankaran  
+Docker Hub: `sivasankaran189`
